@@ -1,4 +1,4 @@
-package com.educards.scrollselectionview
+package com.educards.scrollselector
 
 import org.junit.Test
 
