@@ -5,7 +5,7 @@ import kotlin.math.*
 
 /**
  * This class deals with the computation of the `selectionRatio`: [computeSelectionRatio].
- * The `selection` itself is performed in the second step by the [Selector].
+ * The `selection` itself is may be performed in the second step, usually by leveraging the [Selector].
  *
  * * `selectionRatio` is a real value from an open interval `(0, 1)`.
  *   The value defines which part of the viewport of the scrollable [View] to select.

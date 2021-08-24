@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.absoluteValue
 
 /**
- * [DistanceMeasure] implementation for [RecyclerView] with [LinearLayoutManager].
+ * [DistanceMeasure] implementation for [RecyclerView] utilizing [LinearLayoutManager].
  */
-class DistanceMeasureRecyclerView<VH : RecyclerView.ViewHolder>(
+class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
     private val recyclerView: RecyclerView,
     private val adapter: RecyclerView.Adapter<VH>,
     private val layoutManager: LinearLayoutManager
@@ -84,9 +84,9 @@ class DistanceMeasureRecyclerView<VH : RecyclerView.ViewHolder>(
         }
     }
 
-    private fun <T : RecyclerView.ViewHolder> onBindAndMeasureChild(
-        adapter: RecyclerView.Adapter<T>,
-        phantomViewHolder: T,
+    private fun onBindAndMeasureChild(
+        adapter: RecyclerView.Adapter<VH>,
+        phantomViewHolder: VH,
         position: Int): View
     {
         adapter.onBindViewHolder(phantomViewHolder, position)

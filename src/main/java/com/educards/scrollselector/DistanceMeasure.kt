@@ -1,5 +1,9 @@
 package com.educards.scrollselector
 
+/**
+ * Measures the distance from the current scroll position of a scrollable view (such as [ScrollView])
+ * to a desired [Edge].
+ */
 interface DistanceMeasure {
 
     enum class Edge {
