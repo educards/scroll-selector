@@ -8,11 +8,13 @@ import kotlin.math.absoluteValue
 /**
  * [DistanceMeasure] implementation for [RecyclerView] with [LinearLayoutManager].
  */
-class DistanceMeasureRecyclerView<T : RecyclerView.ViewHolder>(
+class DistanceMeasureRecyclerView<VH : RecyclerView.ViewHolder>(
     private val recyclerView: RecyclerView,
-    private val adapter: RecyclerView.Adapter<T>,
+    private val adapter: RecyclerView.Adapter<VH>,
     private val layoutManager: LinearLayoutManager
 ): DistanceMeasure {
+
+    private lateinit var phantomViewHolder: VH
 
     /**
      * Measures the distance from the current scroll position to the desired [edge].
@@ -51,8 +53,9 @@ class DistanceMeasureRecyclerView<T : RecyclerView.ViewHolder>(
                 firstChild.y.toInt()
             }
 
-            // TODO Hold the single view holder for multiple 'measure' passes to optimize performance
-            val phantomViewHolder = adapter.onCreateViewHolder(recyclerView, 0)
+            if (!::phantomViewHolder.isInitialized) {
+                phantomViewHolder = adapter.onCreateViewHolder(recyclerView, 0)
+            }
 
             // Evaluate views until the watchAheadDistance is met
             // and there are children to evaluate.
@@ -62,7 +65,7 @@ class DistanceMeasureRecyclerView<T : RecyclerView.ViewHolder>(
                 // Previously we evaluated the very first or the very last child view (depending on the scroll direction).
                 // The next view to examine will therefore lie beyond the drawable boundary.
                 // To detect the height of the next/previous child we need to measure it offscreen.
-                var childView = createPhantomChild(adapter, phantomViewHolder, positionToEvaluate)
+                var childView = onBindAndMeasureChild(adapter, phantomViewHolder, positionToEvaluate)
 
                 if (edge == DistanceMeasure.Edge.BOTTOM) {
                     positionToEvaluate++
@@ -81,7 +84,7 @@ class DistanceMeasureRecyclerView<T : RecyclerView.ViewHolder>(
         }
     }
 
-    private fun <T : RecyclerView.ViewHolder> createPhantomChild(
+    private fun <T : RecyclerView.ViewHolder> onBindAndMeasureChild(
         adapter: RecyclerView.Adapter<T>,
         phantomViewHolder: T,
         position: Int): View
