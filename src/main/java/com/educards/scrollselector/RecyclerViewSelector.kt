@@ -13,7 +13,7 @@ abstract class RecyclerViewSelector<VH : RecyclerView.ViewHolder>(
     private val inputParams: InputParams
 ): Selector, RecyclerView.OnScrollListener() {
 
-    private val solver = SelectionRatioSolver()
+    val selectionRatioSolver = SelectionRatioSolver()
 
     private val distanceMeasure = RecyclerViewDistanceMeasure(
         recyclerView,
@@ -31,7 +31,7 @@ abstract class RecyclerViewSelector<VH : RecyclerView.ViewHolder>(
 
             val distTop = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.TOP)
             val distBottom = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.BOTTOM)
-            val ratio = solver.computeSelectionRatio(inputParams, distTop, distBottom)
+            val ratio = selectionRatioSolver.computeSelectionRatio(inputParams, distTop, distBottom)
 
             onUpdateSelection(ratio, distTop, distBottom)
         }
