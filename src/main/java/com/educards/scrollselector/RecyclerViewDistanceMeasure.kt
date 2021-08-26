@@ -14,7 +14,7 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
     private val layoutManager: LinearLayoutManager
 ): DistanceMeasure {
 
-    private lateinit var phantomViewHolder: VH
+    private val phantomViewHoldersMap = mutableMapOf<Int, VH>()
 
     /**
      * Measures the distance from the current scroll position to the desired [edge].
@@ -53,9 +53,7 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
                 firstChild.y.toInt()
             }
 
-            if (!::phantomViewHolder.isInitialized) {
-                phantomViewHolder = adapter.onCreateViewHolder(recyclerView, 0)
-            }
+            var phantomViewHolder = getPhantomViewHolder(positionToEvaluate)
 
             // Evaluate views until the watchAheadDistance is met
             // and there are children to evaluate.
@@ -82,6 +80,16 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
                 exploredDistance.absoluteValue
             }
         }
+    }
+
+    private fun getPhantomViewHolder(positionToEvaluate: Int): VH {
+        val viewType = adapter.getItemViewType(positionToEvaluate)
+        var phantomViewHolder = phantomViewHoldersMap[viewType]
+        if (phantomViewHolder == null) {
+            phantomViewHolder = adapter.onCreateViewHolder(recyclerView, viewType)
+            phantomViewHoldersMap[viewType] = phantomViewHolder
+        }
+        return phantomViewHolder!!
     }
 
     private fun onBindAndMeasureChild(
