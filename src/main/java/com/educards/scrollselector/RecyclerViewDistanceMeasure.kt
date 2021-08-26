@@ -82,8 +82,8 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
         }
     }
 
-    private fun getPhantomViewHolder(positionToEvaluate: Int): VH {
-        val viewType = adapter.getItemViewType(positionToEvaluate)
+    private fun getPhantomViewHolder(position: Int): VH {
+        val viewType = adapter.getItemViewType(position)
         var phantomViewHolder = phantomViewHoldersMap[viewType]
         if (phantomViewHolder == null) {
             phantomViewHolder = adapter.onCreateViewHolder(recyclerView, viewType)
