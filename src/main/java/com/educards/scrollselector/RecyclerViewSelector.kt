@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * [RecyclerView] based implementation of the [Selector].
  */
-abstract class RecyclerViewSelector<VH : RecyclerView.ViewHolder>(
+abstract class RecyclerViewSelector(
     private val recyclerView: RecyclerView,
-    private val adapter: RecyclerView.Adapter<VH>,
+    private val adapter: RecyclerView.Adapter<*>,
     private val linearLayoutManager: LinearLayoutManager,
     private val inputParams: InputParams
 ): Selector, RecyclerView.OnScrollListener() {
