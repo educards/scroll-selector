@@ -53,12 +53,12 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
                 firstChild.y.toInt()
             }
 
-            var phantomViewHolder = getPhantomViewHolder(positionToEvaluate)
-
             // Evaluate views until the watchAheadDistance is met
             // and there are children to evaluate.
             while (exploredDistance.absoluteValue < perceptionRange
                 && 0 <= positionToEvaluate && positionToEvaluate < adapter.itemCount) {
+
+                var phantomViewHolder = getPhantomViewHolder(positionToEvaluate)
 
                 // Previously we evaluated the very first or the very last child view (depending on the scroll direction).
                 // The next view to examine will therefore lie beyond the drawable boundary.
