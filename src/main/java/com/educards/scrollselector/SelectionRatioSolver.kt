@@ -179,7 +179,7 @@ class SelectionRatioSolver {
         val roots = findRoots(x, x0, x1, x2, x3);
         if (roots?.isNotEmpty() == true) {
             for (t in roots) {
-                if (t >= 0 && t < 1) return t
+                if (t in 0.0..1.0) return t
             }
         }
         return null
