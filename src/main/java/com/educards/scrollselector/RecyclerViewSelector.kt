@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 /**
  * [RecyclerView] based implementation of the [Selector].
+ *
+ * Selector has to be explicitly initialized ([init()][init]) after instance is created.
  */
 abstract class RecyclerViewSelector(
     private val recyclerView: RecyclerView,
@@ -21,7 +23,7 @@ abstract class RecyclerViewSelector(
         linearLayoutManager
     )
 
-    init {
+    fun init() {
         recyclerView.addOnScrollListener(this)
     }
 
