@@ -31,6 +31,12 @@ data class InputParams(
      * * 0 - TODO define
      * * 1 - Straight line
      */
-    var stiffness: Double = 0.5
+    var stiffness: Double = 0.5,
+
+    /**
+     * By default the calculated ration is from the interval `(0, 1)`.
+     * This attribute can be used to specify a custom interval (if desired).
+     */
+    var remappedRatio: Pair<Double, Double>? = null,
 
 )

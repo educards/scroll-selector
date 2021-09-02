@@ -24,10 +24,13 @@ class SelectionRatioSolver {
      * `null` if the top is too far to be measured. This is particularly the case for large lists.
      * @param edgeDistanceBottom Distance (number of pixels) to scroll the [View] to the very bottom.
      * `null` if the top is too far to be measured. This is particularly the case for large lists.
+     *
      * @return The `selectionRatio` of the [View]'s viewport:
      * * 0.0 - the top most edge of the [View]
      * * 0.5 - middle part of the [View]
      * * 1.0 - the bottom most edge of the [View]
+     *
+     * **Note**: The `(0, 1)` interval [can be customized][InputParams.remappedRatio].
      */
     fun computeSelectionRatio(
         params: InputParams,
@@ -35,7 +38,7 @@ class SelectionRatioSolver {
         edgeDistanceBottom: Int?,
     ): Double? {
 
-        return if (edgeDistanceTop != null && edgeDistanceBottom != null) {
+        val ratio = if (edgeDistanceTop != null && edgeDistanceBottom != null) {
             curveMiddle(params, edgeDistanceTop, edgeDistanceBottom)
         } else if (edgeDistanceTop != null) {
             curveTop(params, edgeDistanceTop.toDouble())
@@ -45,6 +48,25 @@ class SelectionRatioSolver {
         } else {
             params.selectionYMid
         }
+
+        return remapRatio(ratio, params)
+    }
+
+    private inline fun remapRatio(
+        ratio: Double?,
+        params: InputParams
+    ): Double? {
+
+        return if (ratio != null) {
+
+            // Return the ratio from explicitly defined interval
+            params.remappedRatio?.let {
+                it.first + (it.second - it.first) * ratio
+            }
+            // Return the ratio from the default (0, 1) interval
+                ?: ratio
+
+        } else null
     }
 
     /**
