@@ -34,8 +34,8 @@ data class InputParams(
     var stiffness: Double = 0.5,
 
     /**
-     * By default the calculated ration is from the interval `(0, 1)`.
-     * This attribute can be used to specify a custom interval (if desired).
+     * By default the computed selection ratio is from the interval `(0, 1)`.
+     * This attribute can be used to specify a custom interval.
      */
     var remappedRatio: Pair<Double, Double>? = null,
 

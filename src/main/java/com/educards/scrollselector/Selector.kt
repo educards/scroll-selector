@@ -14,9 +14,18 @@ interface Selector {
 
     /**
      * Performs the selection on a scrollable view (such as [RecyclerView]).
+     *
+     * @param selectionRatio
+     * Value of the selection ratio which is a result of the current state of scrollable view and [InputParams].
+     * For possible values see [interval definition][InputParams.remappedRatio].
+     *
+     * @param scrollDeltaY Vertical distance scrolled by a scrollable view (such as [RecyclerView]).
+     * @param topDistance Distance measured from the top edge of the scrollable content which was used to calculate [selectionRatio].
+     * @param topDistance Distance measured from the bottom edge of the scrollable content which was used to calculate [selectionRatio].
      */
     fun onUpdateSelection(
         selectionRatio: Double?,
+        scrollDeltaY: Int,
         topDistance: Int?,
         bottomDistance: Int?
     )

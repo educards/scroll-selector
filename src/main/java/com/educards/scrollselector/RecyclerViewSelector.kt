@@ -35,10 +35,10 @@ abstract class RecyclerViewSelector(
             val distBottom = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.BOTTOM)
             val ratio = selectionRatioSolver.computeSelectionRatio(inputParams, distTop, distBottom)
 
-            onUpdateSelection(ratio, distTop, distBottom)
+            onUpdateSelection(ratio, dy, distTop, distBottom)
         }
     }
 
-    abstract override fun onUpdateSelection(selectionRatio: Double?, topDistance: Int?, bottomDistance: Int?)
+    abstract override fun onUpdateSelection(selectionRatio: Double?, scrollDeltaY: Int, topDistance: Int?, bottomDistance: Int?)
 
 }
