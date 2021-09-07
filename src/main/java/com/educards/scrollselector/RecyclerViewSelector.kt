@@ -17,6 +17,8 @@ abstract class RecyclerViewSelector(
 
     val selectionRatioSolver = SelectionRatioSolver()
 
+    var enabled = true
+
     private val distanceMeasure = RecyclerViewDistanceMeasure(
         recyclerView,
         adapter,
@@ -29,7 +31,9 @@ abstract class RecyclerViewSelector(
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
-        if (dy != 0) { // interested only in vertical changes (y)
+        if (enabled
+            && dy != 0 // interested only in vertical changes (y)
+        ) {
 
             val distTop = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.TOP)
             val distBottom = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.BOTTOM)
