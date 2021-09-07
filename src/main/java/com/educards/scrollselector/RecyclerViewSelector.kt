@@ -23,7 +23,7 @@ abstract class RecyclerViewSelector(
         linearLayoutManager
     )
 
-    fun init() {
+    init {
         recyclerView.addOnScrollListener(this)
     }
 
