@@ -12,12 +12,14 @@ abstract class RecyclerViewSelector(
     private val recyclerView: RecyclerView,
     private val adapter: RecyclerView.Adapter<*>,
     private val linearLayoutManager: LinearLayoutManager,
-    private val inputParams: InputParams
+    val inputParams: InputParams
 ): Selector, RecyclerView.OnScrollListener() {
 
     val selectionRatioSolver = SelectionRatioSolver()
 
     var enabled = true
+
+    var updateRequested = true
 
     private val distanceMeasure = RecyclerViewDistanceMeasure(
         recyclerView,
@@ -29,11 +31,22 @@ abstract class RecyclerViewSelector(
         recyclerView.addOnScrollListener(this)
     }
 
+    /**
+     * Request to recalculate the selection based on bound [InputParams]
+     * and call [onUpdateSelection].
+     *
+     * By default this is done implicitly when scrolling the view.
+     */
+    fun requestUpdateSelection() {
+        updateRequested = true
+        onScrolled(recyclerView, 0, 0)
+    }
+
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
-        if (enabled
-            && dy != 0 // interested only in vertical changes (y)
+        if (enabled && (updateRequested || dy != 0) // Interested only in changes of 'y'.
         ) {
+            updateRequested = false
 
             val distTop = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.TOP)
             val distBottom = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.BOTTOM)
