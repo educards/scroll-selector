@@ -1,14 +1,16 @@
 package com.educards.scrollselector
 
 /**
- * [Selector] is a contract to actually perform the selection on a scrollable view (such as [RecyclerView]).
+ * [Selector] is a contract to perform the selection on a scrollable view (such as [RecyclerView])
+ * based on `selectionRatio` which is a real value representing the vertical position of the selection.
+ * * 0.0 - the top edge of the scrollable view
+ * * 0.5 - the middle part of the scrollable view
+ * * 1.0 - the bottom edge of the scrollable view
  *
  * In the context of the `ScrollSelector` module, the selection is a second step in
  * the scroll selection procedure.
  *
- * The first step is actually to compute the value of `selectionRatio`.
- *
- * @see SelectionRatioSolver
+ * The first step is actually to compute the value of `selectionRatio` (see [SelectionRatioSolver]).
  */
 interface Selector {
 

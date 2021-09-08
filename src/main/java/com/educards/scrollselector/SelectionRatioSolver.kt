@@ -26,9 +26,9 @@ class SelectionRatioSolver {
      * `null` if the top is too far to be measured. This is particularly the case for large lists.
      *
      * @return The `selectionRatio` of the [View]'s viewport:
-     * * 0.0 - the top most edge of the [View]
+     * * 0.0 - the top edge of the [View]
      * * 0.5 - middle part of the [View]
-     * * 1.0 - the bottom most edge of the [View]
+     * * 1.0 - the bottom edge of the [View]
      *
      * **Note**: The `(0, 1)` interval [can be customized][InputParams.remappedRatio].
      */
