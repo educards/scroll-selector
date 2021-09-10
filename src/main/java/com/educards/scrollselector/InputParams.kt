@@ -7,12 +7,14 @@ data class InputParams(
 
     /**
      * Positive integer (number of pixels) which defines how far the [DistanceMeasure]
-     * is allowed to look for finding the top edge of the content wrapped in a scrollable [View] (such as [RecyclerView]).
+     * is allowed to look for finding the top edge of the intrinsic content wrapped in a scrollable view (such as [RecyclerView]).
      *
      * * **Impact on transition curve**: The bigger the [topPerceptionRange] the smoother is the transition from
      * [selectionYMid] to content edge.
      * * **Impact on performance**: Too big values of [topPerceptionRange] may result in poor performance. Consult
      * the [DistanceMeasure] implementation for details.
+     * * **Recommendation**: For optimal results set the value somewhere within the interval
+     * `(scrollableView.height, 2 * scrollableView.height)`.
      */
     var topPerceptionRange: Int = 2500,
 
@@ -28,8 +30,8 @@ data class InputParams(
     var selectionYMid: Double = .5,
 
     /**
-     * * 0 - TODO define
-     * * 1 - Straight line
+     * * 0 - Maximal curvature (probably over-fitted for the needs of smooth scroll selection)
+     * * 1 - No curvature, straight line
      */
     var stiffness: Double = 0.5,
 
