@@ -33,7 +33,7 @@ data class InputParams(
      * * 0 - Maximal curvature (probably over-fitted for the needs of smooth scroll selection)
      * * 1 - No curvature, straight line
      */
-    var stiffness: Double = 0.5,
+    var stiffness: Double = 0.6,
 
     /**
      * By default the computed selection ratio is from the interval `(0, 1)`.
