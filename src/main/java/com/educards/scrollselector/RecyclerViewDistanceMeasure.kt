@@ -25,16 +25,16 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
      * @return The distance (number of pixels) from the current scroll position to the desired [edge].
      * `null` if the [edge] is too far to be measured. This is particularly the case for large lists.
      */
-    override fun measure(inputParams: InputParams, edge: DistanceMeasure.Edge): Int? {
+    override fun measure(perceptionRangePx: Int, edge: DistanceMeasure.Edge): Int? {
 
         var positionToEvaluate: Int
         var perceptionRange: Int
         if (edge == DistanceMeasure.Edge.BOTTOM) {
             positionToEvaluate = layoutManager.findLastVisibleItemPosition()
-            perceptionRange = inputParams.bottomPerceptionRange
+            perceptionRange = perceptionRangePx
         } else {
             positionToEvaluate = layoutManager.findFirstVisibleItemPosition()
-            perceptionRange = inputParams.topPerceptionRange
+            perceptionRange = perceptionRangePx
         }
 
         if (positionToEvaluate == RecyclerView.NO_POSITION) {

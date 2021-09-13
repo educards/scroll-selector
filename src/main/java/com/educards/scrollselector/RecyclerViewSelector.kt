@@ -21,7 +21,7 @@ abstract class RecyclerViewSelector(
 
     var updateRequested = true
 
-    private val distanceMeasure = RecyclerViewDistanceMeasure(
+    val distanceMeasure = RecyclerViewDistanceMeasure(
         recyclerView,
         adapter,
         linearLayoutManager
@@ -48,8 +48,8 @@ abstract class RecyclerViewSelector(
         ) {
             updateRequested = false
 
-            val distTop = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.TOP)
-            val distBottom = distanceMeasure.measure(inputParams, DistanceMeasure.Edge.BOTTOM)
+            val distTop = distanceMeasure.measure(inputParams.topPerceptionRange, DistanceMeasure.Edge.TOP)
+            val distBottom = distanceMeasure.measure(inputParams.bottomPerceptionRange, DistanceMeasure.Edge.BOTTOM)
             val ratio = selectionRatioSolver.computeSelectionRatio(inputParams, distTop, distBottom)
 
             onUpdateSelection(ratio, dy, distTop, distBottom)
