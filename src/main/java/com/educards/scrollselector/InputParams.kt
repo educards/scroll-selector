@@ -41,4 +41,14 @@ data class InputParams(
      */
     var remappedRatio: Pair<Double, Double>? = null,
 
-)
+) {
+
+    override fun toString(): String {
+        return "InputParams(" +
+                "topPerceptionRange=$topPerceptionRange, " +
+                "bottomPerceptionRange=$bottomPerceptionRange, " +
+                "selectionYMid=$selectionYMid, " +
+                "stiffness=$stiffness, " +
+                "remappedRatio=$remappedRatio)"
+    }
+}
