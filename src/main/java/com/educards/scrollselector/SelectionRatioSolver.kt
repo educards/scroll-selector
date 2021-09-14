@@ -122,10 +122,12 @@ class SelectionRatioSolver {
      * * Is constant for `f(width) = height`
      * * `f` is monotonically decreasing (`x <= y | f(x) <= f(y)`)
      *
-     * These properties ensure, that by proper combining of multiple curves the
-     * resulting curve will also have the same properties.
+     * These properties ensure, that the linear combination of multiple curves will
+     * preserve these properties for the resulting curve.
      *
      * Bezier curve is one possible implementation.
+     *
+     * @return Result as a pair of {x, y}.
      */
     fun curve(
         width: Double,
