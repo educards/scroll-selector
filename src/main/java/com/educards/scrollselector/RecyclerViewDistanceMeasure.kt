@@ -58,12 +58,12 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
             while (exploredDistance.absoluteValue < perceptionRange
                 && 0 <= positionToEvaluate && positionToEvaluate < adapter.itemCount) {
 
-                var phantomViewHolder = getPhantomViewHolder(positionToEvaluate)
+                var phantomViewHolder = createPhantomViewHolder(positionToEvaluate)
 
                 // Previously we evaluated the very first or the very last child view (depending on the scroll direction).
                 // The next view to examine will therefore lie beyond the drawable boundary.
                 // To detect the height of the next/previous child we need to measure it offscreen.
-                var childView = onBindAndMeasureChild(adapter, phantomViewHolder, positionToEvaluate)
+                var childView = onBindAndMeasureChild(phantomViewHolder, positionToEvaluate)
 
                 if (edge == DistanceMeasure.Edge.BOTTOM) {
                     positionToEvaluate++
@@ -82,7 +82,7 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
         }
     }
 
-    private fun getPhantomViewHolder(position: Int): VH {
+    fun createPhantomViewHolder(position: Int): VH {
         val viewType = adapter.getItemViewType(position)
         var phantomViewHolder = phantomViewHoldersMap[viewType]
         if (phantomViewHolder == null) {
@@ -92,8 +92,7 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
         return phantomViewHolder!!
     }
 
-    private fun onBindAndMeasureChild(
-        adapter: RecyclerView.Adapter<VH>,
+    fun onBindAndMeasureChild(
         phantomViewHolder: VH,
         position: Int): View
     {

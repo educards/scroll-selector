@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * Selector has to be explicitly initialized ([init()][init]) after instance is created.
  */
-abstract class RecyclerViewSelector(
+abstract class RecyclerViewSelector<VH : RecyclerView.ViewHolder>(
     private val recyclerView: RecyclerView,
-    private val adapter: RecyclerView.Adapter<*>,
+    private val adapter: RecyclerView.Adapter<VH>,
     private val linearLayoutManager: LinearLayoutManager,
     val inputParams: InputParams
 ): Selector, RecyclerView.OnScrollListener() {
