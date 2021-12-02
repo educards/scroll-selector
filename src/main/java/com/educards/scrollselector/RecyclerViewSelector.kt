@@ -5,8 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 /**
  * [RecyclerView] based implementation of the [Selector].
- *
- * Selector has to be explicitly initialized ([init()][init]) after instance is created.
+ * @see [onUpdateSelection]
  */
 abstract class RecyclerViewSelector<VH : RecyclerView.ViewHolder>(
     private val recyclerView: RecyclerView,

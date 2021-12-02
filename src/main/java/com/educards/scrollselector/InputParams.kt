@@ -35,13 +35,40 @@ data class InputParams(
      */
     var stiffness: Double = 0.6,
 
-) {
+    /**
+     * By default the computed selection ratio is from the interval `(0, 1)`.
+     * This attribute can be used to scale and shift the computed ratio
+     * to match any arbitrary selection area.
+     */
+    var selectionRange: SelectionRange = SelectionRange(),
+
+    ) {
 
     override fun toString(): String {
         return "InputParams(" +
                 "topPerceptionRange=$topPerceptionRange, " +
                 "bottomPerceptionRange=$bottomPerceptionRange, " +
                 "selectionYMid=$selectionYMid, " +
-                "stiffness=$stiffness)"
+                "stiffness=$stiffness, " +
+                "selectionRange=$selectionRange)"
     }
+
+    data class SelectionRange(
+        var from: Double = 0.0,
+        var to: Double = 1.0
+    ) {
+
+        private inline fun noRemapNeeded() = from == 0.0 && to == 1.0
+
+        fun remap(ratio: Double?) =
+            if (ratio != null) {
+                if (noRemapNeeded()) {
+                    ratio
+                } else {
+                    from + (to - from) * ratio
+                }
+            } else null
+
+    }
+
 }
