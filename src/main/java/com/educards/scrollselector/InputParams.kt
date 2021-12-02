@@ -35,12 +35,6 @@ data class InputParams(
      */
     var stiffness: Double = 0.6,
 
-    /**
-     * By default the computed selection ratio is from the interval `(0, 1)`.
-     * This attribute can be used to specify a custom interval.
-     */
-    var remappedRatio: Pair<Double, Double>? = null,
-
 ) {
 
     override fun toString(): String {
@@ -48,7 +42,6 @@ data class InputParams(
                 "topPerceptionRange=$topPerceptionRange, " +
                 "bottomPerceptionRange=$bottomPerceptionRange, " +
                 "selectionYMid=$selectionYMid, " +
-                "stiffness=$stiffness, " +
-                "remappedRatio=$remappedRatio)"
+                "stiffness=$stiffness)"
     }
 }

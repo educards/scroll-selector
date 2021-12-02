@@ -49,24 +49,7 @@ class SelectionRatioSolver {
             params.selectionYMid
         }
 
-        return remapRatio(ratio, params)
-    }
-
-    private inline fun remapRatio(
-        ratio: Double?,
-        params: InputParams
-    ): Double? {
-
-        return if (ratio != null) {
-
-            // Return the ratio from explicitly defined interval
-            params.remappedRatio?.let {
-                it.first + (it.second - it.first) * ratio
-            }
-            // Return the ratio from the default (0, 1) interval
-                ?: ratio
-
-        } else null
+        return ratio
     }
 
     /**
