@@ -31,10 +31,13 @@ abstract class RecyclerViewSelector<VH : RecyclerView.ViewHolder>(
     }
 
     /**
-     * Request to recalculate the selection based on bound [InputParams]
-     * and call [onUpdateSelection].
+     * Request to recalculate the `selectionRatio` based on provided [inputParams].
+     * The recalculation will result in call to [onUpdateSelection].
      *
      * By default this is done implicitly when scrolling the view.
+     * However, explicit recalculation of `selectionRatio` comes handy in cases
+     * when user updates/changes [InputParams] and needs to immediately reflect
+     * this state change also on the `selectionRatio`.
      */
     fun requestUpdateSelection() {
         updateRequested = true
