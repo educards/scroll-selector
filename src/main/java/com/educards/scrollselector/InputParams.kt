@@ -3,6 +3,7 @@ package com.educards.scrollselector
 /**
  * Input parameters for [SelectionRatioSolver].
  */
+// TODO Refactor to SelectionParams or SelectionInputParams
 data class InputParams(
 
     /**
@@ -40,7 +41,7 @@ data class InputParams(
      * This attribute can be used to scale and shift the computed ratio
      * to match any arbitrary selection area.
      */
-    var selectionRange: SelectionRange = SelectionRange(),
+    val selectionArea: SelectionArea = SelectionArea(),
 
     ) {
 
@@ -50,25 +51,7 @@ data class InputParams(
                 "bottomPerceptionRange=$bottomPerceptionRange, " +
                 "selectionYMid=$selectionYMid, " +
                 "stiffness=$stiffness, " +
-                "selectionRange=$selectionRange)"
-    }
-
-    data class SelectionRange(
-        var from: Double = 0.0,
-        var to: Double = 1.0
-    ) {
-
-        private inline fun noRemapNeeded() = from == 0.0 && to == 1.0
-
-        fun remap(ratio: Double?) =
-            if (ratio != null) {
-                if (noRemapNeeded()) {
-                    ratio
-                } else {
-                    from + (to - from) * ratio
-                }
-            } else null
-
+                "selectionArea=$selectionArea)"
     }
 
 }

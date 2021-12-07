@@ -49,7 +49,7 @@ class SelectionRatioSolver {
             params.selectionYMid
         }
 
-        return params.selectionRange.remap(ratio)
+        return params.selectionArea.remapForView(ratio)
     }
 
     /**
