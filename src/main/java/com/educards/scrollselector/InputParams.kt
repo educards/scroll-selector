@@ -43,6 +43,16 @@ data class InputParams(
      */
     val selectionArea: SelectionArea = SelectionArea(),
 
+    /**
+     * This ratio relatively defines the maximum allowed Y position of the selected entry inside `SelectionArea`.
+     * If the relative Y position of selected entry within `SelectionArea` is greater then this value,
+     * then the whole view is scrolled to match this criteria. As a consequence
+     * * the selected entry is never positioned below/over this threshold
+     * * the content is by default not scrolled after the selection is changed,
+     *   however it is if the selection this threshold
+     */
+    var maxSelectionRatio: Double = 0.7
+
     ) {
 
     override fun toString(): String {
@@ -51,7 +61,8 @@ data class InputParams(
                 "bottomPerceptionRange=$bottomPerceptionRange, " +
                 "selectionYMid=$selectionYMid, " +
                 "stiffness=$stiffness, " +
-                "selectionArea=$selectionArea)"
+                "selectionArea=$selectionArea, " +
+                "maxSelectionRatio=$maxSelectionRatio)"
     }
 
 }
