@@ -90,16 +90,13 @@ class SelectionArea(
     fun remapForView(ratio: Double?) = if (ratio != null) { remapForView(ratio) } else null
 
     /**
-     * [selectionAreaRatio] is a relative representation of the selection inside a [SelectionArea].
-     * Therefore, to get an absolute `Y` from the [selectionAreaRatio], one has to include [SelectionArea] bounds into the calculation:
-     * ```
-     * y =
-     *  view.height * selectionArea.ratioFrom +     // y start of the selection area
-     *  selectionArea.height * selectionAreaRatio   // + deltaY inside selection area
-     * ```
-     * However, it is often inconvenient to think of selection with [SelectionArea] in mind.
-     * Therefore, this method scales and shifts the ratio in a way which allows us to
-     * simplify the absolute `Y` calculation by having just a `view.height` in mind:
+     * [selectionAreaRatio] (`[0.0; 1.0]`) is representation of the selection relative to [SelectionArea].
+     *
+     * This method remaps the [selectionAreaRatio] value from the space of [SelectionArea]
+     * to its enclosing (scrollable) view.
+     *
+     * After remapping, one can easily obtain 'Y' coordinate of the selection relative to
+     * (scrollable) view by:
      * ```
      * y = view.height * remapForView(selectionAreaRatio)
      * ```
@@ -108,7 +105,7 @@ class SelectionArea(
         if (coversWholeView()) {
             selectionAreaRatio
         } else {
-            ratioFrom + (ratioTo - ratioFrom) * selectionAreaRatio
+            ratioFrom + ((ratioTo - ratioFrom) * selectionAreaRatio)
         }
 
     override fun toString(): String {
