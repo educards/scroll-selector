@@ -1,8 +1,11 @@
 package com.educards.scrollselector
 
 import android.view.View
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.WeakHashMap
 import kotlin.math.absoluteValue
 
 /**
@@ -17,24 +20,23 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
     private val phantomViewHoldersMap = mutableMapOf<Int, VH>()
 
     /**
-     * Measures the distance from the current scroll position to the desired [edge].
+     * Measures the maximal scroll potential of [RecyclerView] in a given [direction]
+     * with a max limit of [perceptionRangePx].
      *
-     * This implementation internally creates [View] instance to measure the dimension of hidden elements.
-     * Therefore large values of [InputParams.topPerceptionRange] or [InputParams.bottomPerceptionRange] may result in poor performance.
+     * The [perceptionRangePx] limit is required because this implementation might internally
+     * create [View] instances to measure the dimension of not yet bound [RecyclerView] items.
+     * Therefore a too large value of [perceptionRangePx] may result in poor performance.
      *
-     * @return The distance (number of pixels) from the current scroll position to the desired [edge].
-     * `null` if the [edge] is too far to be measured. This is particularly the case for large lists.
+     * @return Scroll potential of a [RecyclerView] in a provided [direction] or
+     * `null` if the scroll potential is greater then provided [perceptionRangePx],
+     * which is particularly the case for large lists and small value of [perceptionRangePx].
      */
-    override fun measure(perceptionRangePx: Int, edge: DistanceMeasure.Edge): Int? {
+    override fun measure(perceptionRangePx: Int, direction: DistanceMeasure.Edge): Int? {
 
-        var positionToEvaluate: Int
-        var perceptionRange: Int
-        if (edge == DistanceMeasure.Edge.BOTTOM) {
-            positionToEvaluate = layoutManager.findLastVisibleItemPosition()
-            perceptionRange = perceptionRangePx
+        var positionToEvaluate = if (direction == DistanceMeasure.Edge.BOTTOM) {
+            layoutManager.findLastVisibleItemPosition()
         } else {
-            positionToEvaluate = layoutManager.findFirstVisibleItemPosition()
-            perceptionRange = perceptionRangePx
+            layoutManager.findFirstVisibleItemPosition()
         }
 
         if (positionToEvaluate == RecyclerView.NO_POSITION) {
@@ -45,39 +47,51 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
             val firstChild = layoutManager.findViewByPosition(positionToEvaluate)
                 ?: throw RuntimeException("Requested child view has not been laid out")
 
-            var exploredDistance: Int = if (edge == DistanceMeasure.Edge.BOTTOM) {
+            var exploredDistancePx: Int = if (direction == DistanceMeasure.Edge.BOTTOM) {
                 positionToEvaluate++
-                firstChild.y.toInt() + firstChild.height - recyclerView.height
+                (
+                    + firstChild.y.toInt()
+                    + firstChild.translationY.toInt()
+                    + firstChild.height
+                    + firstChild.marginBottom
+                    - recyclerView.height
+                )
             } else {
                 positionToEvaluate--
-                firstChild.y.toInt()
+                (
+                    + firstChild.y.toInt()
+                    + firstChild.translationY.toInt()
+                    - firstChild.marginTop
+                )
             }
 
-            // Evaluate views until the watchAheadDistance is met
-            // and there are children to evaluate.
-            while (exploredDistance.absoluteValue < perceptionRange
+            // Evaluate views until the perceptionRangePx value
+            // or until there are more children to evaluate.
+            var offscreenViewHolder: VH
+            var childView: View
+            while (exploredDistancePx.absoluteValue < perceptionRangePx
                 && 0 <= positionToEvaluate && positionToEvaluate < adapter.itemCount) {
 
-                var phantomViewHolder = createPhantomViewHolder(positionToEvaluate)
+                offscreenViewHolder = getOrCreateOffscreenViewHolder(positionToEvaluate)
 
                 // Previously we evaluated the very first or the very last child view (depending on the scroll direction).
                 // The next view to examine will therefore lie beyond the drawable boundary.
                 // To detect the height of the next/previous child we need to measure it offscreen.
-                var childView = onBindAndMeasureChild(phantomViewHolder, positionToEvaluate)
+                childView = onBindAndMeasureChild(offscreenViewHolder, positionToEvaluate)
 
-                if (edge == DistanceMeasure.Edge.BOTTOM) {
+                if (direction == DistanceMeasure.Edge.BOTTOM) {
                     positionToEvaluate++
-                    exploredDistance += childView.measuredHeight
+                    exploredDistancePx += childView.measuredLayoutHeight
                 } else {
                     positionToEvaluate--
-                    exploredDistance -= childView.measuredHeight
+                    exploredDistancePx -= childView.measuredLayoutHeight
                 }
             }
 
-            return if (exploredDistance.absoluteValue >= perceptionRange) {
+            return if (exploredDistancePx.absoluteValue >= perceptionRangePx) {
                 null
             } else {
-                exploredDistance.absoluteValue
+                exploredDistancePx.absoluteValue
             }
         }
     }
