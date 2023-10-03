@@ -17,7 +17,7 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
     private val layoutManager: LinearLayoutManager
 ): DistanceMeasure {
 
-    private val phantomViewHoldersMap = mutableMapOf<Int, VH>()
+    private val offscreenViewHoldersMap = WeakHashMap<Int, VH>()
 
     /**
      * Measures the maximal scroll potential of [RecyclerView] in a given [direction]
@@ -96,14 +96,14 @@ class RecyclerViewDistanceMeasure<VH : RecyclerView.ViewHolder>(
         }
     }
 
-    fun createPhantomViewHolder(position: Int): VH {
+    fun getOrCreateOffscreenViewHolder(position: Int): VH {
         val viewType = adapter.getItemViewType(position)
-        var phantomViewHolder = phantomViewHoldersMap[viewType]
-        if (phantomViewHolder == null) {
-            phantomViewHolder = adapter.onCreateViewHolder(recyclerView, viewType)
-            phantomViewHoldersMap[viewType] = phantomViewHolder
+        var offscreenViewHolder = offscreenViewHoldersMap[viewType]
+        if (offscreenViewHolder == null) {
+            offscreenViewHolder = adapter.onCreateViewHolder(recyclerView, viewType)
+            offscreenViewHoldersMap[viewType] = offscreenViewHolder
         }
-        return phantomViewHolder!!
+        return offscreenViewHolder
     }
 
     fun onBindAndMeasureChild(
